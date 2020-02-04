@@ -36,7 +36,7 @@ def make_chains(text_string):
 
         >>> chains[('hi', 'there')]
         ['mary', 'juanita']
-        
+
         >>> chains[('there','juanita')]
         [None]
     """
@@ -48,16 +48,14 @@ def make_chains(text_string):
     for index in range(len(all_the_words) - 2):
         key = (all_the_words[index], all_the_words[index + 1])
         value = all_the_words[index + 2]
-        # print("In the for")
 
         if key not in chains:
-            # print("In the if")
             lst = []
             lst.append(value)
             chains[key] = lst
-        elif key in chains:
-            # print("In the elif")
-            chains[key].append(value)
+        # elif key in chains:
+        #     chains[key].append(value)
+        chains[key].append(value)
 
     return chains
 
@@ -65,20 +63,30 @@ def make_chains(text_string):
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
+    output_text = []
     key_list = list(chains.keys())
-
     # try orig import and eliminate random. here later
     start_point = random.choice(key_list)
+
+    
     value_list = chains[start_point]
+    chosen_word = random.choice(value_list)
+    our_string = ' '.join(start_point)
+    our_string = f"{our_string} {chosen_word}"
+    print(our_string)
 
-    # start_point.choice(key_list)
-    our_string = str(start_point)
+
+    # put this somewhere
+    # for i in tuple:
+    #     "" = tuple[0]
+    #     str += str.join()
+
+    # while True:
+    #     everything above
 
 
-    # your code goes here
-
-    return " ".join(words)
+    # return " ".join(output_text)
+    pass
 
 
 input_path = "green-eggs.txt"
