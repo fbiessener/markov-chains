@@ -81,16 +81,50 @@ def make_text(chains):
     return (" ".join(output_text))
 
 
+def make_n_chains(text_string, n):
+    """Take input text as string; return dictionary of Markov chains with n-grams"""
+
+    # Initializes chains as an empty dictionary
+    chains = {}
+    # Splits text_string on white space and assigns to variable
+    all_the_words = text_string.split()
+    # Initializes empty key list
+    key = []
+    # Initializes value as the next word after the end of our key tuple
+    value = all_the_words[n]
+
+    # Loops n times to make the key tuple
+    for i in range(n):
+            key.append(all_the_words[i])
+    key = tuple(key)
+
+    if key not in chains:
+        lst = []
+        lst.append(value)
+        chains[key] = lst
+
+    chains[key].append(value)
+
+    return chains
+
+
+def make_n_text(chains):
+    output_text = []
+    return (" ".join(output_text))
+
+
 # No need with new version of open_and_read_file with user input
 # input_path = "gettysburg.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file()
-
+n = input("Please enter a number: ")
+n = int(n)
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_n_chains(input_text, n)
+print(chains)
 
 # Produce random text
-random_text = make_text(chains)
+#random_text = make_text(chains)
 
-print(random_text)
+#print(random_text)
