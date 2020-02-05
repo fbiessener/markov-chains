@@ -1,16 +1,25 @@
 """Generate Markov text from text files."""
 
 import random
+from sys import argv
 
 
-def open_and_read_file(file_path):
+# Temp took out file_path arg to take user input
+def open_and_read_file():
     """Take file path as string; return text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
 
-    file = open(file_path).read()
+    try:
+        file = open(argv[1]).read()
+    except IndexError:
+        file = input("Please enter a text file: ")
+        file = open(file).read()
+
+    # Version 1: doesn't prompt for user input
+    # file = open(file_path).read()
 
     return file
 
@@ -72,10 +81,11 @@ def make_text(chains):
     return (" ".join(output_text))
 
 
-input_path = "green-eggs.txt"
+# No need with new version of open_and_read_file with user input
+# input_path = "gettysburg.txt"
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+input_text = open_and_read_file()
 
 # Get a Markov chain
 chains = make_chains(input_text)
