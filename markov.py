@@ -1,6 +1,5 @@
 """Generate Markov text from text files."""
 
-# from random import choice
 import random
 
 
@@ -17,33 +16,10 @@ def open_and_read_file(file_path):
 
 
 def make_chains(text_string):
-    """Take input text as string; return dictionary of Markov chains.
-
-    A chain will be a key that consists of a tuple of (word1, word2)
-    and the value would be a list of the word(s) that follow those two
-    words in the input text.
-
-    For example:
-
-        >>> chains = make_chains("hi there mary hi there juanita")
-
-    Each bigram (except the last) will be a key in chains:
-
-        >>> sorted(chains.keys())
-        [('hi', 'there'), ('mary', 'hi'), ('there', 'mary')]
-
-    Each item in chains is a list of all possible following words:
-
-        >>> chains[('hi', 'there')]
-        ['mary', 'juanita']
-
-        >>> chains[('there','juanita')]
-        [None]
-    """
+    """Take input text as string; return dictionary of Markov chains."""
 
     chains = {}
     all_the_words = text_string.split()
-    # print(all_the_words)
 
     for index in range(len(all_the_words) - 2):
         key = (all_the_words[index], all_the_words[index + 1])
@@ -53,8 +29,7 @@ def make_chains(text_string):
             lst = []
             lst.append(value)
             chains[key] = lst
-        # elif key in chains:
-        #     chains[key].append(value)
+
         chains[key].append(value)
 
     return chains
@@ -63,38 +38,38 @@ def make_chains(text_string):
 def make_text(chains):
     """Return text from chains."""
 
+    # initializes our output as list
     output_text = []
+
+    # makes a list of all the keys in the dictionary
     key_list = list(chains.keys())
-    # try orig import and eliminate random. here later
+    # Our randomized start point for the chain
     start_point = random.choice(key_list)
+    # pulls the values associated with our start point from the dictionary
     value_list = chains[start_point]
+    # chooses a random word from the value list associated with the start point key
     chosen_word = random.choice(value_list)
+    # adding first value at index zero in our starting point tuple to our output
     output_text.append(start_point[0])
-
+    # adding second value in our starting point tuple to the output
     output_text.append(start_point[1])
-    # output_text = f"{output_text} {chosen_word}"
+
+    # creates a new state with the second word from previous state and the
+    # randomly chosen word, This is the code moving through the Markov chain
     new_key = (start_point[1], chosen_word)
-    # print(output_text)
-    # print(new_key)
 
-    # put this somewhere
-    # for i in tuple:
-    #     "" = tuple[0]
-    #     str += str.join()
-
+    # As long as the new key is in the dictionary continue markoving
+    # (moving to new states)
     while new_key in chains:
-        # print(output_text)
-    #     everything above
+
         value_list = chains[new_key]
         chosen_word = random.choice(value_list)
         output_text.append(chosen_word)
-        #output_text = " ".join(new_key)
-        #output_text = f"{output_text} {chosen_word}"
+
         new_key = (new_key[1], chosen_word)
 
-    # print(output_text)
-
-    return " ".join(output_text)
+    # Converts our Markov [] to a string
+    return (" ".join(output_text))
 
 
 input_path = "green-eggs.txt"
