@@ -67,26 +67,34 @@ def make_text(chains):
     key_list = list(chains.keys())
     # try orig import and eliminate random. here later
     start_point = random.choice(key_list)
-
-    
     value_list = chains[start_point]
     chosen_word = random.choice(value_list)
-    our_string = ' '.join(start_point)
-    our_string = f"{our_string} {chosen_word}"
-    print(our_string)
+    output_text.append(start_point[0])
 
+    output_text.append(start_point[1])
+    # output_text = f"{output_text} {chosen_word}"
+    new_key = (start_point[1], chosen_word)
+    # print(output_text)
+    # print(new_key)
 
     # put this somewhere
     # for i in tuple:
     #     "" = tuple[0]
     #     str += str.join()
 
-    # while True:
+    while new_key in chains:
+        # print(output_text)
     #     everything above
+        value_list = chains[new_key]
+        chosen_word = random.choice(value_list)
+        output_text.append(chosen_word)
+        #output_text = " ".join(new_key)
+        #output_text = f"{output_text} {chosen_word}"
+        new_key = (new_key[1], chosen_word)
 
+    # print(output_text)
 
-    # return " ".join(output_text)
-    pass
+    return " ".join(output_text)
 
 
 input_path = "green-eggs.txt"
