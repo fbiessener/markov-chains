@@ -47,24 +47,24 @@ def make_chains(text_string):
 def make_text(chains):
     """Return text from chains."""
 
-    # initializes our output as list
+    # Initializes our output as list
     output_text = []
 
-    # makes a list of all the keys in the dictionary
+    # Makes a list of all the keys in the dictionary
     key_list = list(chains.keys())
     # Our randomized start point for the chain
     start_point = random.choice(key_list)
-    # pulls the values associated with our start point from the dictionary
+    # Pulls the values associated with our start point from the dictionary
     value_list = chains[start_point]
-    # chooses a random word from the value list associated with the start point key
+    # Chooses a random word from the value list associated with the start point key
     chosen_word = random.choice(value_list)
-    # adding first value at index zero in our starting point tuple to our output
+    # Adding first value at index zero in our starting point tuple to our output
     output_text.append(start_point[0])
-    # adding second value in our starting point tuple to the output
+    # Adding second value in our starting point tuple to the output
     output_text.append(start_point[1])
 
-    # creates a new state with the second word from previous state and the
-    # randomly chosen word, This is the code moving through the Markov chain
+    # Creates a new state with the second word from previous state and the
+    # Randomly chosen word, This is the code moving through the Markov chain
     new_key = (start_point[1], chosen_word)
 
     # As long as the new key is in the dictionary continue markoving
@@ -80,7 +80,8 @@ def make_text(chains):
     # Converts our Markov [] to a string
     return (" ".join(output_text))
 
-
+# n-grams not fully implemented, manke_n_chains() partially finished
+# [::n-1] step slicing ???
 def make_n_chains(text_string, n):
     """Take input text as string; return dictionary of Markov chains with n-grams"""
 
@@ -94,8 +95,16 @@ def make_n_chains(text_string, n):
     value = all_the_words[n]
 
     # Loops n times to make the key tuple
+    # for index in range(len(all_the_words) - n):
+    # #currently only looping n times to make the first dictionary entry and then stopping
+    #     start = 0
+    #     for i in range(start, n):
+    #         key.append(all_the_words[i])
+    #         start += 1
+    #         n += 1
     for i in range(n):
-            key.append(all_the_words[i])
+        key.append(all_the_words[i])
+        # print(key)
     key = tuple(key)
 
     if key not in chains:
@@ -105,11 +114,77 @@ def make_n_chains(text_string, n):
 
     chains[key].append(value)
 
+    print(chains)
     return chains
 
 
-def make_n_text(chains):
+# possible helper stub for key making
+# def key_helper(key, n):
+#     for i in range(n):
+#         key.append(all_the_words[i])
+#     return key
+
+
+# possible helper stub for value updating
+# def value_helper(value):
+#     lst = []
+#     lst.append(value)
+#     chains[key] = lst
+#     return lst
+
+
+def make_n_text(chains, n):
+    """Return text from chains using n-grams."""
+
+    # Initializes our output as list
     output_text = []
+
+    # Makes a list of all the keys in the dictionary
+    key_list = list(chains.keys())
+    # Initialized a blank list for holding key tuple slices
+    addtl_key_list = []
+    # Our randomized start point for the chain
+    start_point = random.choice(key_list)
+    # Pulls the values associated with our start point from the dictionary
+    value_list = chains[start_point]
+    # Chooses a random word from the value list associated with the start point key
+    chosen_word = random.choice(value_list)
+
+    # Adding value at index i in our starting point tuple to our output
+    for i in range(n):
+        output_text.append(start_point[i])
+
+    # Creates a new state with the second word from previous state and the
+    # randomly chosen word, This is the code moving through the Markov chain
+    # Loop grabs the last n-1 words of the key tuple and puts them in a list
+    for i in range(-n, -1):
+        addtl_key_list.append(start_point[i])
+    # addtl_key_list appends the nth word onto the list
+    addtl_key_list.append(chosen_word)
+    # new_key makes the addtl_key_list into a tuple
+    new_key = tuple(addtl_key_list)
+
+    print(new_key)
+
+    # As long as the new key is in the dictionary continue markoving
+    # (moving to new states)
+    while new_key in chains:
+
+        value_list = chains[new_key]
+        chosen_word = random.choice(value_list)
+        output_text.append(chosen_word)
+        n_key_list = []
+
+        # 
+        for i in range():
+            print("here")
+            n_key_list.append(new_key[i])
+            # addtl_key_list appends the nth word onto the list
+        n_key_list.append(chosen_word)
+        # new_key makes the addtl_key_list into a tuple
+        new_key = tuple(n_key_list)
+
+    # Converts our Markov [] to a string
     return (" ".join(output_text))
 
 
@@ -118,13 +193,13 @@ def make_n_text(chains):
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file()
-n = input("Please enter a number: ")
+n = input("Please enter amount n for n-gram: ")
 n = int(n)
 # Get a Markov chain
 chains = make_n_chains(input_text, n)
-print(chains)
 
 # Produce random text
-#random_text = make_text(chains)
+# random_text = make_text(chains)
+random_text = make_n_text(chains, n)
 
-#print(random_text)
+print(random_text)
